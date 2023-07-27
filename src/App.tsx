@@ -1,22 +1,25 @@
 import {useState} from "react";
 import {Button, Input, Modal, Table} from 'antd';
-import type {ColumnsType, TableProps} from 'antd/es/table';
-import {deleteUser, IUser, selectAllUsers, selectFilteredUsers} from "./store/usersSlice";
+import type {ColumnsType} from 'antd/es/table';
+import {deleteUser, IUser, selectFilteredUsers} from "./store/usersSlice";
 import {useAppSelector} from "./hook/useAppSelector";
-import {DeleteFilled, DeleteOutlined, EditOutlined, SearchOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EditOutlined, SearchOutlined} from "@ant-design/icons";
 import {useAppDispatch} from "./hook/useAppDispatch";
-
+import AddUserForm from "./components/AddUserForm";
+import dayjs from "dayjs";
 
 
 const App = () => {
 
+
   const [search, setSearch] = useState<string>('')
-  const users = useAppSelector(selectAllUsers)
   const filteredUsers = useAppSelector((state) => selectFilteredUsers(state, search))
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dispatch = useAppDispatch()
+
+  const [userChange, setUserChange] = useState<IUser>()
 
 
   const columns: ColumnsType<IUser> = [
@@ -47,7 +50,10 @@ const App = () => {
             />
 
             <EditOutlined
-              onClick={showModal}
+              onClick={() => {
+                showModal()
+                setUserChange(user)
+              }}
               className='action-icon'
               title='Edit'
             />
@@ -62,11 +68,7 @@ const App = () => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
+  const handleClose = () => {
     setIsModalOpen(false);
   };
 
@@ -76,7 +78,7 @@ const App = () => {
       <div className='header'>
         <Input
           size="large"
-          placeholder="large size"
+          placeholder="Enter name..."
           onChange={(event) => setSearch(event.target.value)}
           prefix={<SearchOutlined/>}
           className='search-input'
@@ -96,10 +98,18 @@ const App = () => {
         className='table'
       />
 
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+      <Modal
+        title={userChange ? 'Edit user' : 'Add new user'}
+        open={isModalOpen}
+        onOk={handleClose}
+        onCancel={handleClose}
+        footer={[
+          <Button key="back" onClick={handleClose}>
+            Cancel
+          </Button>,
+        ]}
+      >
+        <AddUserForm changingUser={userChange} handleClose={handleClose}/>
       </Modal>
     </div>
   );

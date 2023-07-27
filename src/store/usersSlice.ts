@@ -71,16 +71,19 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action: PayloadAction<IUser>) => {
+      state.push(action.payload)
 
     },
     deleteUser: (state, action: PayloadAction<string>) => {
 
       const id = action.payload
-
       return state.filter(user => user.id !== id)
 
     },
-    editUser: (state, action: PayloadAction) => {
+    editUser: (state, action: PayloadAction<IUser>) => {
+      return state.map(user => {
+        return  action.payload.id === user.id ? {...action.payload} : {...user}
+      })
 
     }
   }
