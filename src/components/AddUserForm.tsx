@@ -1,21 +1,22 @@
 import {Button, DatePicker, DatePickerProps, Form, Input, InputNumber, Space} from "antd";
-import {SubmitButton} from "./SubmitButton/SubmitButton";
+import {SubmitButton} from "./SubmitButton";
 import {useAppDispatch} from "../hook/useAppDispatch";
-import {addUser, editUser, IUser} from "../store/usersSlice";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from "dayjs";
+import {IAddUserForm, IUser} from "../types";
+import {addUser, editUser} from "../store/usersSlice";
 
-const AddUserForm = ({handleClose, changingUser}: {handleClose: () => void, changingUser?: IUser}) => {
+
+const AddUserForm = ({handleClose, changingUser}: IAddUserForm) => {
 
   const dispatch = useAppDispatch()
-
   const [form] = Form.useForm();
   const [date, setDate] = useState<string>('')
 
   const handleSubmit = (values: IUser) => {
     if (changingUser) {
-      dispatch(editUser({...values, date, id: changingUser.id}))
+      dispatch(editUser({...values, date: dayjs(values.date).format('DD.MM.YYYY'), id: changingUser.id}))
     } else {
       dispatch(addUser({...values, id: uuidv4(), date}))
     }
@@ -26,9 +27,12 @@ const AddUserForm = ({handleClose, changingUser}: {handleClose: () => void, chan
     setDate(dateString)
   };
 
-  const dateString = '07.02.2023';
-  const datee = dayjs(dateString, 'DD.MM.YYYY');
-  console.log(datee);
+  useEffect(() => {
+    form.resetFields()
+    if (changingUser) {
+      form.setFieldsValue({...changingUser, date: dayjs(changingUser?.date, 'DD.MM.YYYY')})
+    }
+  }, [form, changingUser])
 
   return (
     <Form
@@ -37,11 +41,6 @@ const AddUserForm = ({handleClose, changingUser}: {handleClose: () => void, chan
       name="validateOnly"
       layout="vertical"
       autoComplete="off"
-      initialValues={changingUser &&{
-        ["name"]: changingUser.name,
-        ["age"]: changingUser.age,
-        ["date"]: dayjs(changingUser.date, 'DD.MM.YYYY'),
-      }}
     >
 
       <Form.Item name="name" label="Name" rules={[{required: true}]}>

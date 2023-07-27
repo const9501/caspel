@@ -19,9 +19,24 @@
     display: flex;
     justify-content: space-between;
 
-    .search-input {
+    .search-wrapper {
+      display: flex;
+      gap: 30px;
       width: 100%;
-      max-width: 400px;
+      max-width: 600px;
+
+      .search-input {
+        width: 100%;
+      }
+    }
+
+  }
+  
+  @media (max-width: 720px) {
+    .header {
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
     }
   }
 
@@ -45,4 +60,5 @@
     }
   }
 }
+
 

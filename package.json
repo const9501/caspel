@@ -2,6 +2,7 @@
   "name": "caspel",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://const9501.github.io/caspel/",
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
     "@reduxjs/toolkit": "^1.9.5",
@@ -15,11 +16,11 @@
     "@types/react-redux": "^7.1.25",
     "antd": "^5.7.2",
     "dayjs": "^1.11.9",
+    "gh-pages": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.1",
     "react-scripts": "5.0.1",
-    "redux-persist": "^6.0.0",
     "sass": "^1.64.1",
     "typescript": "^4.9.5",
     "uuid": "^9.0.0",
@@ -29,7 +30,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build",
+    "predeploy": "npm run build"
   },
   "eslintConfig": {
     "extends": [
