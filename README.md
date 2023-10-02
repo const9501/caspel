@@ -1,5 +1,6 @@
-# Приложение для редактирования таблицы пользователей
+# SPA TODO-приложение.
 
-### React + Typescript + Redux Toolkit + AntD
+### React + Typescript + Redux
 
-Приложение отображающее таблицу со списком пользователей с возможностью выполнения CRUD операций и поиска
+- [todo app](https://kanban-git-master-const9501.vercel.app/)
+- [todo app](https://kanban-7bls57m5k-const9501.vercel.app/)
